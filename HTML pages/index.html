@@ -1,16 +1,404 @@
 <!DOCTYPE html>
-
-
-
-<html lang="en"></html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>DECA Mart Online Store</title>
-  </head>
-  <body>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DECA Cart</title>
+<style>
+  :root {
+    --navy: #0f2a4a;
+    --blue: #1d5fd6;
+    --blue-dark: #
+    16468f;
+    --bg: #f5f7fa;
+    --border: #e3e7ee;
+    --text: #1a2436;
+    --muted: #5b6675;
+  }
 
-<h1>Welcome to LT Deca Mart jsisdjfoisjdfoisdjfoidsjfsdf hhuh</h1>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background: #fff;
+    line-height: 1.5;
+  }
 
-  </body>
+  a { text-decoration: none; color: inherit; }
+
+  /* ---------- Header ---------- */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--navy);
+  }
+
+  .logo-mark {
+    width: 12px;
+    height: 12px;
+    background: var(--navy);
+    display: inline-block;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+  }
+
+  nav a {
+    font-size: 0.95rem;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  nav a.active {
+    color: var(--blue);
+    font-weight: 600;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .cart-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #eef4ff;
+    color: var(--blue-dark);
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 1px solid #d9e6fb;
+  }
+
+  .login-btn {
+    padding: 9px 18px;
+    border-radius: 8px;
+    border: 1px solid #d7dbe2;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    background: var(--bg);
+    padding: 80px 48px 100px;
+  }
+
+  .hero-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    background: #e7edf7;
+    color: var(--navy);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 22px;
+  }
+
+  .hero-copy h1 {
+    font-size: 3.1rem;
+    line-height: 1.1;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 22px;
+  }
+
+  .hero-copy h1 span {
+    color: var(--blue);
+  }
+
+  .hero-copy p {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 46ch;
+    margin-bottom: 32px;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 14px;
+  }
+
+  .btn-primary {
+    background: var(--navy);
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-secondary {
+    background: #fff;
+    color: var(--text);
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid #d7dbe2;
+    cursor: pointer;
+  }
+
+  .hero-image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #dfe6f0, #c9d4e4);
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* ---------- Features ---------- */
+  .features {
+    padding: 90px 48px;
+    text-align: center;
+  }
+
+  .features-eyebrow {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--blue);
+    margin-bottom: 14px;
+  }
+
+  .features h2 {
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 56px;
+  }
+
+  .feature-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .feature-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 30px 26px;
+    text-align: left;
+  }
+
+  .feature-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    background: #eaf1fd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blue);
+    font-size: 1.2rem;
+    margin-bottom: 18px;
+  }
+
+  .feature-card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+
+  .feature-card p {
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    background: #fff;
+    border-top: 1px solid var(--border);
+    padding: 60px 48px 28px;
+  }
+
+  .footer-top {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .footer-brand p {
+    color: var(--muted);
+    max-width: 34ch;
+    margin-top: 12px;
+    font-size: 0.92rem;
+  }
+
+  .footer-cols {
+    display: flex;
+    gap: 80px;
+  }
+
+  .footer-col h4 {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+
+  .footer-col a {
+    display: block;
+    color: var(--muted);
+    font-size: 0.92rem;
+    margin-bottom: 12px;
+  }
+
+  .footer-bottom {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .powered-by {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--navy);
+    font-weight: 700;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    header { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    nav { display: none; }
+    .hero { padding: 50px 20px 60px; }
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-copy h1 { font-size: 2.2rem; }
+    .features { padding: 60px 20px; }
+    .feature-grid { grid-template-columns: 1fr; }
+    footer { padding: 40px 20px 24px; }
+    .footer-top { flex-direction: column; }
+    .footer-cols { gap: 40px; }
+    .footer-bottom { flex-direction: column; gap: 10px; align-items: flex-start; }
+  }
+</style>
 </head>
+<body>
+
+  <header>
+    <div class="logo"><span class="logo-mark"></span>DECA Cart</div>
+    <nav>
+      <a href="#">Mission</a>
+      <a href="#" class="active">Inventory</a>
+      <a href="#">Our Employees</a>
+      <a href="#">FAQ</a>
+    </nav>
+    <div class="header-actions">
+      <a href="#" class="cart-btn">🛒 Cart (0)</a>
+      <a href="#" class="login-btn">Log In</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">THE STUDENT BUSINESS HUB</span>
+        <h1>DECA Cart to <span>DECA Mart</span></h1>
+        <p>Your official high school store, now online. Browse snacks, quick drinks, modern school supplies, and exclusive merchandise from anywhere on campus. Order online, pick up in minutes.</p>
+        <div class="hero-ctas">
+          <button class="btn-primary">Shop the Store</button>
+          <button class="btn-secondary">Learn More</button>
+        </div>
+      </div>
+      <div class="hero-image" role="img" aria-label="Photo of the DECA Mart store interior"></div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="features-eyebrow">WHY SUPPORT DECA CART?</div>
+    <h2>More than just a store</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <h3>100% Student Operated</h3>
+        <p>DECA students manage pricing, logistics, design, and stock. Every purchase supports real-world entrepreneurial education.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🕒</div>
+        <h3>Lightning-Fast Pickups</h3>
+        <p>Order between classes or during study hall — we prep your orders instantly for quick pickup at the main DECA Mart counter.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏅</div>
+        <h3>Funding Student Success</h3>
+        <p>Proceeds directly fund DECA competition travel, scholarship opportunities, leadership conferences, and career preparation.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo"><span class="logo-mark"></span>DECA Cart</div>
+        <p>Connecting students with quality convenience. Shop our curated catalog built entirely by and for students.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>EXPLORE</h4>
+          <a href="#">All Products</a>
+          <a href="#">New Arrivals</a>
+          <a href="#">DECA Apparel</a>
+        </div>
+        <div class="footer-col">
+          <h4>ABOUT US</h4>
+          <a href="#">Our Mission</a>
+          <a href="#">Meet the Team</a>
+          <a href="#">Contact DECA</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 DECA Cart. All Rights Reserved. Prepared by local DECA High School Chapter.</span>
+      <span class="powered-by">Powered by DECA <span class="logo-mark"></span></span>
+    </div>
+  </footer>
+
+</body>
+</html>
