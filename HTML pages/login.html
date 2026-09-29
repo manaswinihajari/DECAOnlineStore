@@ -1,1 +1,385 @@
+<!-- look at line 220 to input stuff  -->
 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DECA Cart — Log In</title>
+<style>
+  :root {
+    --navy: #0f2a4a;
+    --blue: #1d5fd6;
+    --blue-dark: #16468f;
+    --bg: #f5f7fa;
+    --border: #e3e7ee;
+    --text: #1a2436;
+    --muted: #5b6675;
+    --error: #c0362c;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+  }
+  .card {
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 40px 36px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(15, 42, 74, 0.06);
+  }
+  .mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+  .logo-mark {
+    width: 12px;
+    height: 12px;
+    background: var(--navy);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .mark span {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin: 0 0 6px;
+    line-height: 1.2;
+    color: var(--navy);
+  }
+  .sub {
+    margin: 0 0 28px;
+    font-size: 0.92rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  form { display: flex; flex-direction: column; gap: 16px; }
+  label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  input {
+    width: 100%;
+    padding: 11px 13px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 8px;
+  }
+  input:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 1px;
+    background: #fff;
+  }
+  .field-error {
+    color: var(--error);
+    font-size: 0.78rem;
+    margin-top: 5px;
+    min-height: 16px;
+  }
+  button.primary {
+    margin-top: 8px;
+    padding: 13px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    border: none;
+    border-radius: 8px;
+    background: var(--navy);
+    color: #fff;
+    cursor: pointer;
+  }
+  button.primary:hover { background: var(--blue-dark); }
+  button.primary:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  button.primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .switch {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .switch button {
+    background: none;
+    border: none;
+    color: var(--blue);
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+  }
+  .switch button:hover { color: var(--blue-dark); }
+  .banner {
+    font-size: 0.82rem;
+    padding: 10px 13px;
+    border: 1px solid #f0c2bd;
+    background: #fdf1f0;
+    border-radius: 8px;
+    color: var(--error);
+    margin-bottom: 16px;
+    display: none;
+  }
+  .banner.show { display: block; }
+  .dash { display: none; }
+  .dash.show { display: block; }
+  .auth { display: block; }
+  .auth.hide { display: none; }
+  .dash h1 { margin-bottom: 4px; }
+  .dash .sub { margin-bottom: 24px; }
+  .signout {
+    margin-top: 24px;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  .signout:hover { border-color: var(--blue); color: var(--blue-dark); }
+  .hint { font-size: 0.75rem; color: var(--muted); margin-top: 24px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <div id="authView" class="auth">
+    <div class="mark">
+      <span class="logo-mark"></span>
+      <span>DECA Cart</span>
+    </div>
+
+    <h1 id="formTitle">Welcome back</h1>
+    <p class="sub" id="formSub">Sign in to order from the DECA Mart counter.</p>
+
+    <div class="banner" id="banner"></div>
+
+    <form id="authForm" novalidate>
+      <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" autocomplete="username" required>
+        <div class="field-error" id="emailErr"></div>
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" autocomplete="current-password" required>
+        <div class="field-error" id="passErr"></div>
+      </div>
+      <button type="submit" class="primary" id="submitBtn">Sign in</button>
+    </form>
+
+    <div class="switch">
+      <span id="switchPrompt">No account yet?</span>
+      <button type="button" id="switchBtn">Create one</button>
+    </div>
+
+    <p class="hint">Accounts are managed by Firebase Authentication.</p>
+  </div>
+
+  <div id="dashView" class="dash">
+    <div class="mark">
+      <span class="logo-mark"></span>
+      <span>DECA Cart</span>
+    </div>
+    <h1>You're in</h1>
+    <p class="sub" id="welcomeMsg"></p>
+    <button class="signout" id="signoutBtn">Sign out</button>
+  </div>
+
+</div>
+
+<script type="module">
+  // ---- 1. Firebase setup -----------------------------------------------
+  // Replace this with the config object Firebase gave you when you
+  // registered your web app (Project settings > General > Your apps).
+  const firebaseConfig = {
+  apiKey: "AIzaSyCV0Hr4fyZTvIIUd1meLznJyaEkv761Nf0",
+  authDomain: "deca-online-store.firebaseapp.com",
+  projectId: "deca-online-store",
+  storageBucket: "deca-online-store.firebasestorage.app",
+  messagingSenderId: "542379553359",
+  appId: "1:542379553359:web:75e151454e06b6e10b303a",
+  measurementId: "G-3WJRVBBQ5D"
+};
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // ---- 2. UI wiring (unchanged from before) ------------------------------
+  const authView = document.getElementById('authView');
+  const dashView = document.getElementById('dashView');
+  const form = document.getElementById('authForm');
+  const emailEl = document.getElementById('email');
+  const passEl = document.getElementById('password');
+  const emailErr = document.getElementById('emailErr');
+  const passErr = document.getElementById('passErr');
+  const banner = document.getElementById('banner');
+  const formTitle = document.getElementById('formTitle');
+  const formSub = document.getElementById('formSub');
+  const submitBtn = document.getElementById('submitBtn');
+  const switchPrompt = document.getElementById('switchPrompt');
+  const switchBtn = document.getElementById('switchBtn');
+  const welcomeMsg = document.getElementById('welcomeMsg');
+  const signoutBtn = document.getElementById('signoutBtn');
+
+  let mode = 'login'; // or 'signup'
+
+  function showBanner(msg) {
+    banner.textContent = msg;
+    banner.classList.add('show');
+  }
+  function clearBanner() {
+    banner.textContent = '';
+    banner.classList.remove('show');
+  }
+  function clearFieldErrors() {
+    emailErr.textContent = '';
+    passErr.textContent = '';
+  }
+
+  function setMode(next) {
+    mode = next;
+    clearBanner();
+    clearFieldErrors();
+    form.reset();
+    if (mode === 'login') {
+      formTitle.textContent = 'Welcome back';
+      formSub.textContent = 'Sign in to order from the DECA Mart counter.';
+      submitBtn.textContent = 'Sign in';
+      switchPrompt.textContent = 'No account yet?';
+      switchBtn.textContent = 'Create one';
+      passEl.setAttribute('autocomplete', 'current-password');
+    } else {
+      formTitle.textContent = 'Create an account';
+      formSub.textContent = 'Pick an email and password to register.';
+      submitBtn.textContent = 'Create account';
+      switchPrompt.textContent = 'Already registered?';
+      switchBtn.textContent = 'Sign in';
+      passEl.setAttribute('autocomplete', 'new-password');
+    }
+  }
+
+  switchBtn.addEventListener('click', function () {
+    setMode(mode === 'login' ? 'signup' : 'login');
+  });
+
+  function validEmail(v) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
+
+  // Turn Firebase's error codes into plain-language messages.
+  function friendlyError(err) {
+    const code = err && err.code;
+    switch (code) {
+      case 'auth/email-already-in-use':
+        return 'That email is already registered. Try signing in instead.';
+      case 'auth/invalid-email':
+        return 'Enter a valid email address.';
+      case 'auth/weak-password':
+        return 'Password needs at least 6 characters.';
+      case 'auth/invalid-credential':
+      case 'auth/wrong-password':
+      case 'auth/user-not-found':
+        return 'Email or password is incorrect.';
+      case 'auth/too-many-requests':
+        return 'Too many attempts. Wait a moment and try again.';
+      default:
+        return 'Something went wrong. Please try again.';
+    }
+  }
+
+  // ---- 3. Form submit: create account or sign in ------------------------
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    clearBanner();
+    clearFieldErrors();
+
+    const email = emailEl.value.trim().toLowerCase();
+    const pass = passEl.value;
+    let ok = true;
+
+    if (!validEmail(email)) {
+      emailErr.textContent = 'Enter a valid email address.';
+      ok = false;
+    }
+    if (pass.length < 6) {
+      passErr.textContent = 'Password needs at least 6 characters.';
+      ok = false;
+    }
+    if (!ok) return;
+
+    submitBtn.disabled = true;
+
+    try {
+      if (mode === 'signup') {
+        await createUserWithEmailAndPassword(auth, email, pass);
+      } else {
+        await signInWithEmailAndPassword(auth, email, pass);
+      }
+      // onAuthStateChanged (below) handles showing the dashboard.
+    } catch (err) {
+      showBanner(friendlyError(err));
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  // ---- 4. Sign out --------------------------------------------------------
+  signoutBtn.addEventListener('click', function () {
+    signOut(auth);
+  });
+
+  // ---- 5. React to auth state (login, signup, page refresh, sign out) ----
+  onAuthStateChanged(auth, function (user) {
+    if (user) {
+      authView.classList.add('hide');
+      dashView.classList.add('show');
+      welcomeMsg.textContent = 'Signed in as ' + user.email + '.';
+    } else {
+      dashView.classList.remove('show');
+      authView.classList.remove('hide');
+      setMode('login');
+    }
+  });
+</script>
+
+</body>
+</html>
