@@ -1,6 +1,3 @@
-<!-- look at line 220 to input stuff  -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -106,6 +103,7 @@
   button.primary {
     margin-top: 8px;
     padding: 13px;
+    width: 100%;
     font-size: 0.95rem;
     font-weight: 600;
     font-family: inherit;
@@ -124,7 +122,7 @@
     font-size: 0.85rem;
     color: var(--muted);
   }
-  .switch button {
+  .switch button, .linkbtn {
     background: none;
     border: none;
     color: var(--blue);
@@ -134,7 +132,8 @@
     cursor: pointer;
     padding: 0;
   }
-  .switch button:hover { color: var(--blue-dark); }
+  .switch button:hover, .linkbtn:hover { color: var(--blue-dark); }
+  .linkbtn:disabled { color: var(--muted); cursor: not-allowed; }
   .banner {
     font-size: 0.82rem;
     padding: 10px 13px;
@@ -146,12 +145,13 @@
     display: none;
   }
   .banner.show { display: block; }
-  .dash { display: none; }
-  .dash.show { display: block; }
-  .auth { display: block; }
-  .auth.hide { display: none; }
-  .dash h1 { margin-bottom: 4px; }
-  .dash .sub { margin-bottom: 24px; }
+  .banner.info {
+    border-color: #c5d6f5;
+    background: #eef4fe;
+    color: var(--blue-dark);
+  }
+  .view { display: none; }
+  .view.active { display: block; }
   .signout {
     margin-top: 24px;
     background: none;
@@ -166,27 +166,30 @@
   }
   .signout:hover { border-color: var(--blue); color: var(--blue-dark); }
   .hint { font-size: 0.75rem; color: var(--muted); margin-top: 24px; line-height: 1.5; }
+  .verify-actions { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .verify-actions .row { font-size: 0.85rem; color: var(--muted); }
 </style>
 </head>
 <body>
 
 <div class="card">
 
-  <div id="authView" class="auth">
+  <!-- LOGIN / SIGNUP -->
+  <div id="authView" class="view">
     <div class="mark">
       <span class="logo-mark"></span>
       <span>DECA Cart</span>
     </div>
 
     <h1 id="formTitle">Welcome back</h1>
-    <p class="sub" id="formSub">Sign in to order from the DECA Mart counter.</p>
+    <p class="sub" id="formSub">Sign in with your LTISD email to order from the DECA Mart counter.</p>
 
     <div class="banner" id="banner"></div>
 
     <form id="authForm" novalidate>
       <div>
-        <label for="email">Email</label>
-        <input type="email" id="email" autocomplete="username" required>
+        <label for="email">School email</label>
+        <input type="email" id="email" placeholder="you@ltisdschools.net" autocomplete="username" required>
         <div class="field-error" id="emailErr"></div>
       </div>
       <div>
@@ -202,10 +205,32 @@
       <button type="button" id="switchBtn">Create one</button>
     </div>
 
-    <p class="hint">Accounts are managed by Firebase Authentication.</p>
+    <p class="hint">Only @ltisdschools.net accounts are allowed. Accounts are managed by Firebase Authentication.</p>
   </div>
 
-  <div id="dashView" class="dash">
+  <!-- VERIFY EMAIL -->
+  <div id="verifyView" class="view">
+    <div class="mark">
+      <span class="logo-mark"></span>
+      <span>DECA Cart</span>
+    </div>
+    <h1>Verify your email</h1>
+    <p class="sub">We sent a verification link to <strong id="verifyEmail"></strong>. Click it, then come back and press the button below. Check your spam folder if you don't see it.</p>
+
+    <div class="banner" id="verifyBanner"></div>
+
+    <div class="verify-actions">
+      <button class="primary" id="checkVerifiedBtn" type="button">I've verified my email</button>
+      <div class="row">
+        Didn't get it?
+        <button class="linkbtn" id="resendBtn" type="button">Resend email</button>
+      </div>
+      <button class="linkbtn" id="verifySignoutBtn" type="button">Use a different account</button>
+    </div>
+  </div>
+
+  <!-- SIGNED IN -->
+  <div id="dashView" class="view">
     <div class="mark">
       <span class="logo-mark"></span>
       <span>DECA Cart</span>
@@ -219,23 +244,22 @@
 
 <script type="module">
   // ---- 1. Firebase setup -----------------------------------------------
-  // Replace this with the config object Firebase gave you when you
-  // registered your web app (Project settings > General > Your apps).
   const firebaseConfig = {
-  apiKey: "AIzaSyCV0Hr4fyZTvIIUd1meLznJyaEkv761Nf0",
-  authDomain: "deca-online-store.firebaseapp.com",
-  projectId: "deca-online-store",
-  storageBucket: "deca-online-store.firebasestorage.app",
-  messagingSenderId: "542379553359",
-  appId: "1:542379553359:web:75e151454e06b6e10b303a",
-  measurementId: "G-3WJRVBBQ5D"
-};
+    apiKey: "AIzaSyCV0Hr4fyZTvIIUd1meLznJyaEkv761Nf0",
+    authDomain: "deca-online-store.firebaseapp.com",
+    projectId: "deca-online-store",
+    storageBucket: "deca-online-store.firebasestorage.app",
+    messagingSenderId: "542379553359",
+    appId: "1:542379553359:web:75e151454e06b6e10b303a",
+    measurementId: "G-3WJRVBBQ5D"
+  };
 
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
   import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    sendEmailVerification,
     signOut,
     onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
@@ -243,9 +267,18 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  // ---- 2. UI wiring (unchanged from before) ------------------------------
-  const authView = document.getElementById('authView');
-  const dashView = document.getElementById('dashView');
+  // ---- 2. Domain restriction ---------------------------------------------
+  const ALLOWED_DOMAIN = 'ltisdschools.net';
+  function isDistrictEmail(e) {
+    return (e || '').toLowerCase().split('@')[1] === ALLOWED_DOMAIN;
+  }
+
+  // ---- 3. UI wiring --------------------------------------------------------
+  const views = {
+    auth: document.getElementById('authView'),
+    verify: document.getElementById('verifyView'),
+    dash: document.getElementById('dashView')
+  };
   const form = document.getElementById('authForm');
   const emailEl = document.getElementById('email');
   const passEl = document.getElementById('password');
@@ -259,16 +292,29 @@
   const switchBtn = document.getElementById('switchBtn');
   const welcomeMsg = document.getElementById('welcomeMsg');
   const signoutBtn = document.getElementById('signoutBtn');
+  const verifyEmailEl = document.getElementById('verifyEmail');
+  const verifyBanner = document.getElementById('verifyBanner');
+  const checkVerifiedBtn = document.getElementById('checkVerifiedBtn');
+  const resendBtn = document.getElementById('resendBtn');
+  const verifySignoutBtn = document.getElementById('verifySignoutBtn');
 
   let mode = 'login'; // or 'signup'
+  let pendingMsg = '';  // message to show on the login screen after a forced sign-out
 
-  function showBanner(msg) {
-    banner.textContent = msg;
-    banner.classList.add('show');
+  function showView(name) {
+    Object.keys(views).forEach(function (k) {
+      views[k].classList.toggle('active', k === name);
+    });
   }
-  function clearBanner() {
-    banner.textContent = '';
-    banner.classList.remove('show');
+
+  function showBanner(el, msg, isInfo) {
+    el.textContent = msg;
+    el.classList.toggle('info', !!isInfo);
+    el.classList.add('show');
+  }
+  function clearBanner(el) {
+    el.textContent = '';
+    el.classList.remove('show', 'info');
   }
   function clearFieldErrors() {
     emailErr.textContent = '';
@@ -277,19 +323,19 @@
 
   function setMode(next) {
     mode = next;
-    clearBanner();
+    clearBanner(banner);
     clearFieldErrors();
     form.reset();
     if (mode === 'login') {
       formTitle.textContent = 'Welcome back';
-      formSub.textContent = 'Sign in to order from the DECA Mart counter.';
+      formSub.textContent = 'Sign in with your LTISD email to order from the DECA Mart counter.';
       submitBtn.textContent = 'Sign in';
       switchPrompt.textContent = 'No account yet?';
       switchBtn.textContent = 'Create one';
       passEl.setAttribute('autocomplete', 'current-password');
     } else {
       formTitle.textContent = 'Create an account';
-      formSub.textContent = 'Pick an email and password to register.';
+      formSub.textContent = 'Use your @ltisdschools.net email and pick a password.';
       submitBtn.textContent = 'Create account';
       switchPrompt.textContent = 'Already registered?';
       switchBtn.textContent = 'Sign in';
@@ -326,10 +372,10 @@
     }
   }
 
-  // ---- 3. Form submit: create account or sign in ------------------------
+  // ---- 4. Form submit: create account or sign in ------------------------
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
-    clearBanner();
+    clearBanner(banner);
     clearFieldErrors();
 
     const email = emailEl.value.trim().toLowerCase();
@@ -338,6 +384,9 @@
 
     if (!validEmail(email)) {
       emailErr.textContent = 'Enter a valid email address.';
+      ok = false;
+    } else if (!isDistrictEmail(email)) {
+      emailErr.textContent = 'Use your @' + ALLOWED_DOMAIN + ' email.';
       ok = false;
     }
     if (pass.length < 6) {
@@ -350,35 +399,89 @@
 
     try {
       if (mode === 'signup') {
-        await createUserWithEmailAndPassword(auth, email, pass);
+        const cred = await createUserWithEmailAndPassword(auth, email, pass);
+        await sendEmailVerification(cred.user);
       } else {
         await signInWithEmailAndPassword(auth, email, pass);
       }
-      // onAuthStateChanged (below) handles showing the dashboard.
+      // onAuthStateChanged (below) decides which screen to show.
     } catch (err) {
-      showBanner(friendlyError(err));
+      showBanner(banner, friendlyError(err));
     } finally {
       submitBtn.disabled = false;
     }
   });
 
-  // ---- 4. Sign out --------------------------------------------------------
-  signoutBtn.addEventListener('click', function () {
-    signOut(auth);
-  });
-
-  // ---- 5. React to auth state (login, signup, page refresh, sign out) ----
-  onAuthStateChanged(auth, function (user) {
-    if (user) {
-      authView.classList.add('hide');
-      dashView.classList.add('show');
-      welcomeMsg.textContent = 'Signed in as ' + user.email + '.';
-    } else {
-      dashView.classList.remove('show');
-      authView.classList.remove('hide');
-      setMode('login');
+  // ---- 5. Verify-email screen actions --------------------------------------
+  checkVerifiedBtn.addEventListener('click', async function () {
+    clearBanner(verifyBanner);
+    const user = auth.currentUser;
+    if (!user) return;
+    checkVerifiedBtn.disabled = true;
+    try {
+      await user.reload();
+      if (user.emailVerified) {
+        // Refresh the token so security rules see email_verified = true.
+        await user.getIdToken(true);
+        render(user);
+      } else {
+        showBanner(verifyBanner, "Not verified yet. Click the link in the email first.");
+      }
+    } catch (err) {
+      showBanner(verifyBanner, friendlyError(err));
+    } finally {
+      checkVerifiedBtn.disabled = false;
     }
   });
+
+  resendBtn.addEventListener('click', async function () {
+    clearBanner(verifyBanner);
+    const user = auth.currentUser;
+    if (!user) return;
+    resendBtn.disabled = true;
+    try {
+      await sendEmailVerification(user);
+      showBanner(verifyBanner, 'Verification email sent again.', true);
+    } catch (err) {
+      showBanner(verifyBanner, friendlyError(err));
+    }
+    // Short cooldown so people don't hammer the button.
+    setTimeout(function () { resendBtn.disabled = false; }, 30000);
+  });
+
+  verifySignoutBtn.addEventListener('click', function () { signOut(auth); });
+  signoutBtn.addEventListener('click', function () { signOut(auth); });
+
+  // ---- 6. Decide which screen to show --------------------------------------
+  function render(user) {
+    if (!user) {
+      showView('auth');
+      setMode('login');
+      if (pendingMsg) {
+        showBanner(banner, pendingMsg);
+        pendingMsg = '';
+      }
+      return;
+    }
+    // Block any account that isn't from the district (e.g. an old test account).
+    if (!isDistrictEmail(user.email)) {
+      pendingMsg = 'Only @' + ALLOWED_DOMAIN + ' accounts can use DECA Cart.';
+      signOut(auth);
+      return;
+    }
+    if (!user.emailVerified) {
+      verifyEmailEl.textContent = user.email;
+      clearBanner(verifyBanner);
+      showView('verify');
+      return;
+    }
+    welcomeMsg.textContent = 'Signed in as ' + user.email + '.';
+    showView('dash');
+  }
+
+  // Fires on login, signup, page refresh, and sign out.
+  onAuthStateChanged(auth, render);
+  
 </script>
 
 </body>

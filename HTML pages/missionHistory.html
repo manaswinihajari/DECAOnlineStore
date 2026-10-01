@@ -1,1 +1,364 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Our Story &amp; Milestones | DECA Cart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #1e4b8c;
+      --blue-dark: #183d73;
+      --ink: #1a202c;
+      --muted: #6b7686;
+      --line: #e6e9ef;
+      --line-blue: #b8c7de;
+      --bg: #f8f9fb;
+      --white: #ffffff;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    :focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 3px;
+    }
+
+    /* ---------- Header ---------- */
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 18px 58px;
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+
+    .brand-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--blue);
+      position: relative;
+    }
+    .brand-icon::after {
+      content: "";
+      position: absolute;
+      inset: 9px;
+      border: 2px solid var(--white);
+      border-radius: 3px;
+      transform: rotate(45deg) scale(.8);
+    }
+
+    .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+    .brand-name { font-size: 18px; font-weight: 700; color: var(--blue); }
+    .brand-sub {
+      font-size: 9.5px;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav { display: flex; gap: 28px; font-size: 14px; font-weight: 500; }
+    .nav a { padding: 6px 0; position: relative; }
+    .nav a.active { color: var(--blue); font-weight: 600; }
+    .nav a.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 14px;
+      height: 2px;
+      background: var(--blue);
+      border-radius: 2px;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      background: var(--blue);
+      color: var(--white);
+      text-align: center;
+      padding: 60px 24px 42px;
+    }
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: #cfdbee;
+    }
+    .hero h1 {
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      margin: 10px 0 18px;
+    }
+    .hero-sub {
+      max-width: 640px;
+      margin: 0 auto;
+      font-size: 15.5px;
+      color: #e3ebf7;
+    }
+
+    /* ---------- Main layout ---------- */
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 44px;
+      align-items: start;
+      max-width: 1188px;
+      margin: 0 auto;
+      padding: 50px 24px 60px;
+    }
+
+    .left-col { display: flex; flex-direction: column; gap: 28px; }
+
+    /* Photo */
+    .photo {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #dfe5ee; /* shows while image is missing */
+      aspect-ratio: 564 / 307;
+    }
+    .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .photo figcaption {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--white);
+      background: rgba(15, 20, 30, .78);
+      border-bottom-right-radius: 12px;
+    }
+
+    /* Quote card */
+    .quote-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 28px 28px 24px;
+    }
+    .quote-card p { font-size: 17px; line-height: 1.5; }
+    .quote-card footer { display: flex; align-items: center; gap: 12px; margin-top: 20px; }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #dfe5ee;
+    }
+    .quote-card strong { display: block; font-size: 13.5px; font-weight: 600; }
+    .quote-card footer span { font-size: 12px; color: var(--muted); }
+
+    /* ---------- Timeline ---------- */
+    .timeline-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 28px 28px 36px;
+    }
+    .timeline-card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 26px;
+    }
+
+    .timeline { list-style: none; }
+
+    .milestone {
+      position: relative;
+      display: flex;
+      gap: 18px;
+      padding-bottom: 34px;
+      min-height: 56px;
+    }
+    .milestone:last-child { padding-bottom: 0; }
+
+    /* vertical connector */
+    .milestone::before {
+      content: "";
+      position: absolute;
+      left: 13px;
+      top: 30px;
+      bottom: 2px;
+      width: 2px;
+      background: var(--line-blue);
+    }
+    .milestone:last-child::before { display: none; }
+
+    /* circle marker */
+    .dot {
+      flex: 0 0 28px;
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--blue);
+      border-radius: 50%;
+      background: var(--white);
+      position: relative;
+      z-index: 1;
+    }
+    .dot::after {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .milestone-body { padding-top: 2px; min-width: 0; }
+
+    .milestone-date {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+    .milestone-title {
+      font-size: 16.5px;
+      font-weight: 700;
+      margin: 2px 0 6px;
+    }
+    .milestone-desc {
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 900px) {
+      .site-header { flex-direction: column; padding: 16px 24px; }
+      .nav { flex-wrap: wrap; justify-content: center; gap: 18px; }
+      .content { grid-template-columns: 1fr; gap: 32px; }
+      .hero h1 { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="site-header">
+    <a class="brand" href="#">
+      <span class="brand-icon" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-name">DECA Cart</span>
+        <span class="brand-sub">Student Enterprise</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#" class="active" aria-current="page">Mission</a>
+      <a href="#">Inventory</a>
+      <a href="#">Our Employees</a>
+      <a href="#">FAQ</a>
+      <a href="#">Cart</a>
+      <a href="#">Log In</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">The Journey of a Student-Led Enterprise</p>
+    <h1>Our Story &amp; Milestones</h1>
+    <p class="hero-sub">From a humble classroom counter to an award-winning digital marketplace, see how DECA Mart is teaching the next generation of business leaders.</p>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="content">
+
+    <!-- LEFT COLUMN -->
+    <div class="left-col">
+      <figure class="photo">
+        <img src="images/operating-board.jpg" alt="DECA Mart operating board standing in front of the store shelves">
+        <figcaption>DECA Mart Operating Board 2026</figcaption>
+      </figure>
+
+      <blockquote class="quote-card">
+        <p>"Operating this store taught us how to run a real supply chain, build an online store, and manage marketing calendars under pressure. We didn't just learn business theory; we lived it."</p>
+        <footer>
+          <img class="avatar" src="images/sarah-jenkins.jpg" alt="">
+          <div>
+            <strong>Sarah Jenkins</strong>
+            <span>Co-Founder &amp; Chief Operations Officer</span>
+          </div>
+        </footer>
+      </blockquote>
+    </div>
+
+    <!-- RIGHT COLUMN: TIMELINE -->
+    <section class="timeline-card" aria-labelledby="timeline-title">
+      <h2 id="timeline-title">Evolution Timeline</h2>
+
+      <ol class="timeline">
+
+        <!-- Copy this <li> block for each milestone -->
+        <li class="milestone">
+          <span class="dot" aria-hidden="true"></span>
+          <div class="milestone-body">
+            <p class="milestone-date"><!-- Season + Year --></p>
+            <h3 class="milestone-title"><!-- Milestone title --></h3>
+            <p class="milestone-desc"><!-- Milestone description --></p>
+          </div>
+        </li>
+
+        <li class="milestone">
+          <span class="dot" aria-hidden="true"></span>
+          <div class="milestone-body">
+            <p class="milestone-date"></p>
+            <h3 class="milestone-title"></h3>
+            <p class="milestone-desc"></p>
+          </div>
+        </li>
+
+        <li class="milestone">
+          <span class="dot" aria-hidden="true"></span>
+          <div class="milestone-body">
+            <p class="milestone-date"></p>
+            <h3 class="milestone-title"></h3>
+            <p class="milestone-desc"></p>
+          </div>
+        </li>
+
+        <li class="milestone">
+          <span class="dot" aria-hidden="true"></span>
+          <div class="milestone-body">
+            <p class="milestone-date"></p>
+            <h3 class="milestone-title"></h3>
+            <p class="milestone-desc"></p>
+          </div>
+        </li>
+
+        <li class="milestone">
+          <span class="dot" aria-hidden="true"></span>
+          <div class="milestone-body">
+            <p class="milestone-date"></p>
+            <h3 class="milestone-title"></h3>
+            <p class="milestone-desc"></p>
+          </div>
+        </li>
+
+      </ol>
+    </section>
+
+  </main>
+</body>
+</html>

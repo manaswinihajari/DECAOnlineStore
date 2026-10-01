@@ -5,400 +5,431 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DECA Cart</title>
 <style>
-  :root {
-    --navy: #0f2a4a;
-    --blue: #1d5fd6;
-    --blue-dark: #
-    16468f;
-    --bg: #f5f7fa;
-    --border: #e3e7ee;
-    --text: #1a2436;
-    --muted: #5b6675;
-  }
+:root{--navy:#0f2a4a;--blue:#1d5fd6;--blue-dark:#16468f;--bg:#f5f7fa;--border:#e3e7ee;--text:#1a2436;--muted:#5b6675;--error:#c0362c}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:#fff;line-height:1.5}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer}
+.hidden{display:none!important}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* Header */
+header{display:flex;align-items:center;justify-content:space-between;padding:18px 48px;border-bottom:1px solid var(--border);position:relative}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.15rem;color:var(--navy)}
+.logo-mark{width:12px;height:12px;background:var(--navy);display:inline-block;flex-shrink:0}
+nav{display:flex;gap:36px}
+nav a{font-size:.95rem;font-weight:500}
+nav a.active{color:var(--blue);font-weight:600}
+.header-actions{display:flex;align-items:center;gap:14px}
+.cart-btn{background:#eef4ff;color:var(--blue-dark);padding:9px 16px;border-radius:8px;font-weight:600;font-size:.9rem;border:1px solid #d9e6fb}
+.login-btn{padding:9px 18px;border-radius:8px;border:1px solid #d7dbe2;background:#fff;font-weight:600;font-size:.9rem;color:var(--text)}
+.login-btn:hover{border-color:var(--blue)}
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: var(--text);
-    background: #fff;
-    line-height: 1.5;
-  }
+/* Profile menu */
+.profile{position:relative}
+.profile-btn{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #d7dbe2;border-radius:999px;padding:4px 14px 4px 4px;font-weight:600;font-size:.9rem;color:var(--text)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;flex-shrink:0}
+.avatar.lg{width:64px;height:64px;font-size:1.4rem}
+.menu{position:absolute;right:0;top:calc(100% + 8px);width:240px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 24px rgba(15,42,74,.12);padding:8px;z-index:20}
+.menu-head{padding:10px 12px;border-bottom:1px solid var(--border);margin-bottom:6px}
+.menu-head strong{display:block;font-size:.92rem;color:var(--navy)}
+.menu-head span{font-size:.8rem;color:var(--muted);word-break:break-all}
+.menu a,.menu button{display:block;width:100%;text-align:left;padding:9px 12px;border:none;background:none;border-radius:8px;font-size:.9rem;color:var(--text)}
+.menu a:hover,.menu button:hover{background:var(--bg)}
 
-  a { text-decoration: none; color: inherit; }
+/* Hero */
+.hero{background:var(--bg);padding:80px 48px 100px}
+.hero-grid{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.eyebrow{display:inline-block;background:#e7edf7;color:var(--navy);font-size:.72rem;font-weight:700;letter-spacing:.04em;padding:6px 14px;border-radius:20px;margin-bottom:22px}
+.hero-copy h1{font-size:3.1rem;line-height:1.1;font-weight:800;color:var(--navy);margin-bottom:22px}
+.hero-copy h1 span{color:var(--blue)}
+.hero-copy p{font-size:1.05rem;color:var(--muted);max-width:46ch;margin-bottom:32px}
+.hero-ctas{display:flex;gap:14px}
+.btn-primary{background:var(--navy);color:#fff;padding:14px 24px;border-radius:8px;font-weight:600;font-size:.95rem;border:none}
+.btn-primary:hover{background:var(--blue-dark)}
+.btn-secondary{background:#fff;color:var(--text);padding:14px 24px;border-radius:8px;font-weight:600;font-size:.95rem;border:1px solid #d7dbe2}
+.hero-image{width:100%;aspect-ratio:4/3;border-radius:14px;background:linear-gradient(135deg,#dfe6f0,#c9d4e4)}
 
-  /* ---------- Header ---------- */
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 48px;
-    border-bottom: 1px solid var(--border);
-  }
+/* Profile section */
+.account{padding:60px 48px 0}
+.account-card{max-width:1200px;margin:0 auto;border:1px solid var(--border);border-radius:14px;padding:28px 32px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.account-info{flex:1;min-width:220px}
+.account-info h2{font-size:1.4rem;color:var(--navy)}
+.account-info p{color:var(--muted);font-size:.92rem}
+.badge{display:inline-block;margin-top:8px;background:#e8f6ee;color:#1d7a46;font-size:.75rem;font-weight:700;padding:4px 10px;border-radius:20px}
+.account-meta{display:flex;gap:40px;flex-wrap:wrap}
+.account-meta div span{display:block;font-size:.75rem;color:var(--muted);font-weight:600}
+.account-meta div strong{font-size:.92rem;color:var(--navy)}
 
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 700;
-    font-size: 1.15rem;
-    color: var(--navy);
-  }
+/* Features */
+.features{padding:90px 48px;text-align:center}
+.features-eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.05em;color:var(--blue);margin-bottom:14px}
+.features h2{font-size:2.1rem;font-weight:800;color:var(--navy);margin-bottom:56px}
+.feature-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feature-card{border:1px solid var(--border);border-radius:12px;padding:30px 26px;text-align:left}
+.feature-icon{width:42px;height:42px;border-radius:8px;background:#eaf1fd;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:18px}
+.feature-card h3{font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:10px}
+.feature-card p{font-size:.92rem;color:var(--muted)}
 
-  .logo-mark {
-    width: 12px;
-    height: 12px;
-    background: var(--navy);
-    display: inline-block;
-  }
+/* Footer */
+footer{border-top:1px solid var(--border);padding:60px 48px 28px}
+.footer-top{max-width:1300px;margin:0 auto 40px;display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.footer-brand p{color:var(--muted);max-width:34ch;margin-top:12px;font-size:.92rem}
+.footer-cols{display:flex;gap:80px}
+.footer-col h4{font-size:.8rem;font-weight:700;letter-spacing:.04em;color:var(--navy);margin-bottom:16px}
+.footer-col a{display:block;color:var(--muted);font-size:.92rem;margin-bottom:12px}
+.footer-bottom{max-width:1300px;margin:0 auto;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:var(--muted)}
+.powered-by{display:flex;align-items:center;gap:8px;color:var(--navy);font-weight:700}
 
-  nav {
-    display: flex;
-    align-items: center;
-    gap: 36px;
-  }
+/* Login modal */
+.overlay{position:fixed;inset:0;background:rgba(15,42,74,.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50;overflow-y:auto}
+.card{width:100%;max-width:400px;border-radius:14px;padding:36px;background:#fff;position:relative}
+.close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:1.5rem;color:var(--muted);line-height:1}
+.card .logo{font-size:1.05rem;margin-bottom:24px}
+.card h1{font-size:1.6rem;font-weight:800;margin-bottom:6px;line-height:1.2;color:var(--navy)}
+.sub{margin-bottom:24px;font-size:.92rem;color:var(--muted)}
+form{display:flex;flex-direction:column;gap:16px}
+label{font-size:.82rem;font-weight:600;display:block;margin-bottom:6px}
+input{width:100%;padding:11px 13px;font-size:.95rem;font-family:inherit;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:8px}
+input:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.field-error{color:var(--error);font-size:.78rem;margin-top:5px;min-height:16px}
+.primary{margin-top:8px;padding:13px;width:100%;font-size:.95rem;font-weight:600;border:none;border-radius:8px;background:var(--navy);color:#fff}
+.primary:hover{background:var(--blue-dark)}
+.primary:disabled{opacity:.5;cursor:not-allowed}
+.switch{text-align:center;margin-top:22px;font-size:.85rem;color:var(--muted)}
+.linkbtn{background:none;border:none;color:var(--blue);font-size:inherit;font-weight:600;padding:0}
+.linkbtn:disabled{color:var(--muted);cursor:not-allowed}
+.banner{font-size:.82rem;padding:10px 13px;border:1px solid #f0c2bd;background:#fdf1f0;border-radius:8px;color:var(--error);margin-bottom:16px;display:none}
+.banner.show{display:block}
+.banner.info{border-color:#c5d6f5;background:#eef4fe;color:var(--blue-dark)}
+.hint{font-size:.75rem;color:var(--muted);margin-top:20px}
+.verify-actions{display:flex;flex-direction:column;gap:12px;align-items:center;font-size:.85rem;color:var(--muted)}
 
-  nav a {
-    font-size: 0.95rem;
-    color: var(--text);
-    font-weight: 500;
-  }
-
-  nav a.active {
-    color: var(--blue);
-    font-weight: 600;
-  }
-
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .cart-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: #eef4ff;
-    color: var(--blue-dark);
-    padding: 9px 16px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    border: 1px solid #d9e6fb;
-  }
-
-  .login-btn {
-    padding: 9px 18px;
-    border-radius: 8px;
-    border: 1px solid #d7dbe2;
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
-
-  /* ---------- Hero ---------- */
-  .hero {
-    background: var(--bg);
-    padding: 80px 48px 100px;
-  }
-
-  .hero-grid {
-    max-width: 1300px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-  }
-
-  .eyebrow {
-    display: inline-block;
-    background: #e7edf7;
-    color: var(--navy);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    padding: 6px 14px;
-    border-radius: 20px;
-    margin-bottom: 22px;
-  }
-
-  .hero-copy h1 {
-    font-size: 3.1rem;
-    line-height: 1.1;
-    font-weight: 800;
-    color: var(--navy);
-    margin-bottom: 22px;
-  }
-
-  .hero-copy h1 span {
-    color: var(--blue);
-  }
-
-  .hero-copy p {
-    font-size: 1.05rem;
-    color: var(--muted);
-    max-width: 46ch;
-    margin-bottom: 32px;
-  }
-
-  .hero-ctas {
-    display: flex;
-    gap: 14px;
-  }
-
-  .btn-primary {
-    background: var(--navy);
-    color: #fff;
-    padding: 14px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    border: none;
-    cursor: pointer;
-  }
-
-  .btn-secondary {
-    background: #fff;
-    color: var(--text);
-    padding: 14px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    border: 1px solid #d7dbe2;
-    cursor: pointer;
-  }
-
-  .hero-image {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #dfe6f0, #c9d4e4);
-    background-size: cover;
-    background-position: center;
-  }
-
-  /* ---------- Features ---------- */
-  .features {
-    padding: 90px 48px;
-    text-align: center;
-  }
-
-  .features-eyebrow {
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    color: var(--blue);
-    margin-bottom: 14px;
-  }
-
-  .features h2 {
-    font-size: 2.1rem;
-    font-weight: 800;
-    color: var(--navy);
-    margin-bottom: 56px;
-  }
-
-  .feature-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-
-  .feature-card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 30px 26px;
-    text-align: left;
-  }
-
-  .feature-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 8px;
-    background: #eaf1fd;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--blue);
-    font-size: 1.2rem;
-    margin-bottom: 18px;
-  }
-
-  .feature-card h3 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 10px;
-  }
-
-  .feature-card p {
-    font-size: 0.92rem;
-    color: var(--muted);
-  }
-
-  /* ---------- Footer ---------- */
-  footer {
-    background: #fff;
-    border-top: 1px solid var(--border);
-    padding: 60px 48px 28px;
-  }
-
-  .footer-top {
-    max-width: 1300px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    gap: 40px;
-    flex-wrap: wrap;
-    margin-bottom: 40px;
-  }
-
-  .footer-brand p {
-    color: var(--muted);
-    max-width: 34ch;
-    margin-top: 12px;
-    font-size: 0.92rem;
-  }
-
-  .footer-cols {
-    display: flex;
-    gap: 80px;
-  }
-
-  .footer-col h4 {
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: var(--navy);
-    margin-bottom: 16px;
-  }
-
-  .footer-col a {
-    display: block;
-    color: var(--muted);
-    font-size: 0.92rem;
-    margin-bottom: 12px;
-  }
-
-  .footer-bottom {
-    max-width: 1300px;
-    margin: 0 auto;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.85rem;
-    color: var(--muted);
-  }
-
-  .powered-by {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--navy);
-    font-weight: 700;
-  }
-
-  /* ---------- Responsive ---------- */
-  @media (max-width: 900px) {
-    header { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
-    nav { display: none; }
-    .hero { padding: 50px 20px 60px; }
-    .hero-grid { grid-template-columns: 1fr; }
-    .hero-copy h1 { font-size: 2.2rem; }
-    .features { padding: 60px 20px; }
-    .feature-grid { grid-template-columns: 1fr; }
-    footer { padding: 40px 20px 24px; }
-    .footer-top { flex-direction: column; }
-    .footer-cols { gap: 40px; }
-    .footer-bottom { flex-direction: column; gap: 10px; align-items: flex-start; }
-  }
+@media(max-width:900px){
+header{padding:16px 20px}nav{display:none}
+.hero{padding:50px 20px 60px}.hero-grid{grid-template-columns:1fr}.hero-copy h1{font-size:2.2rem}
+.account{padding:40px 20px 0}.features{padding:60px 20px}.feature-grid{grid-template-columns:1fr}
+footer{padding:40px 20px 24px}.footer-top{flex-direction:column}.footer-cols{gap:40px}
+.footer-bottom{flex-direction:column;gap:10px;align-items:flex-start}
+.profile-btn .pname{display:none}.profile-btn{padding:4px}
+}
 </style>
 </head>
 <body>
 
-  <header>
+<header>
+  <a href="#top" class="logo"><span class="logo-mark"></span>DECA Cart</a>
+  <nav>
+    <a href="#">Mission</a>
+    <a href="#" class="active">Inventory</a>
+    <a href="#">Our Employees</a>
+    <a href="#">FAQ</a>
+  </nav>
+  <div class="header-actions">
+    <a href="#" class="cart-btn">🛒 Cart (0)</a>
+    <button class="login-btn" id="openLogin">Log In</button>
+    <div class="profile hidden" id="profileMenuWrap">
+      <button class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+        <span class="avatar" id="navAvatar"></span><span class="pname" id="navName"></span>
+      </button>
+      <div class="menu hidden" id="menu">
+        <div class="menu-head"><strong id="menuName"></strong><span id="menuEmail"></span></div>
+        <a href="#account">My profile</a>
+        <button id="menuSignout">Sign out</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">THE STUDENT BUSINESS HUB</span>
+      <h1 id="heroTitle">DECA Cart to <span>DECA Mart</span></h1>
+      <p>Your official high school store, now online. Browse snacks, quick drinks, modern school supplies, and exclusive merchandise from anywhere on campus. Order online, pick up in minutes.</p>
+      <div class="hero-ctas">
+        <button class="btn-primary">Shop the Store</button>
+        <button class="btn-secondary">Learn More</button>
+      </div>
+    </div>
+    <div class="hero-image" role="img" aria-label="Photo of the DECA Mart store interior"></div>
+  </div>
+</section>
+
+<section class="account hidden" id="account">
+  <div class="account-card">
+    <div class="avatar lg" id="accAvatar"></div>
+    <div class="account-info">
+      <h2 id="accName"></h2>
+      <p id="accEmail"></p>
+      <span class="badge">✓ Verified student account</span>
+    </div>
+    <div class="account-meta">
+      <div><span>Member since</span><strong id="accSince"></strong></div>
+      <div><span>Last sign-in</span><strong id="accLast"></strong></div>
+      <div><span>Orders</span><strong>0</strong></div>
+    </div>
+    <button class="btn-secondary" id="accSignout">Sign out</button>
+  </div>
+</section>
+
+<section class="features">
+  <div class="features-eyebrow">WHY SUPPORT DECA CART?</div>
+  <h2>More than just a store</h2>
+  <div class="feature-grid">
+    <div class="feature-card"><div class="feature-icon">👥</div><h3>100% Student Operated</h3><p>DECA students manage pricing, logistics, design, and stock. Every purchase supports real-world entrepreneurial education.</p></div>
+    <div class="feature-card"><div class="feature-icon">🕒</div><h3>Lightning-Fast Pickups</h3><p>Order between classes or during study hall — we prep your orders instantly for quick pickup at the main DECA Mart counter.</p></div>
+    <div class="feature-card"><div class="feature-icon">🏅</div><h3>Funding Student Success</h3><p>Proceeds directly fund DECA competition travel, scholarship opportunities, leadership conferences, and career preparation.</p></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo"><span class="logo-mark"></span>DECA Cart</div>
+      <p>Connecting students with quality convenience. Shop our curated catalog built entirely by and for students.</p>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col"><h4>EXPLORE</h4><a href="#">All Products</a><a href="#">New Arrivals</a><a href="#">DECA Apparel</a></div>
+      <div class="footer-col"><h4>ABOUT US</h4><a href="#">Our Mission</a><a href="#">Meet the Team</a><a href="#">Contact DECA</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 DECA Cart. All Rights Reserved. Prepared by local DECA High School Chapter.</span>
+    <span class="powered-by">Powered by DECA <span class="logo-mark"></span></span>
+  </div>
+</footer>
+
+<!-- Login modal -->
+<div class="overlay hidden" id="overlay">
+  <div class="card" role="dialog" aria-modal="true">
+    <button class="close" id="closeModal" aria-label="Close">×</button>
     <div class="logo"><span class="logo-mark"></span>DECA Cart</div>
-    <nav>
-      <a href="#">Mission</a>
-      <a href="#" class="active">Inventory</a>
-      <a href="#">Our Employees</a>
-      <a href="#">FAQ</a>
-    </nav>
-    <div class="header-actions">
-      <a href="#" class="cart-btn">🛒 Cart (0)</a>
-      <a href="#" class="login-btn">Log In</a>
-    </div>
-  </header>
 
-  <section class="hero">
-    <div class="hero-grid">
-      <div class="hero-copy">
-        <span class="eyebrow">THE STUDENT BUSINESS HUB</span>
-        <h1>DECA Cart to <span>DECA Mart</span></h1>
-        <p>Your official high school store, now online. Browse snacks, quick drinks, modern school supplies, and exclusive merchandise from anywhere on campus. Order online, pick up in minutes.</p>
-        <div class="hero-ctas">
-          <button class="btn-primary">Shop the Store</button>
-          <button class="btn-secondary">Learn More</button>
+    <div id="authView">
+      <h1 id="formTitle">Welcome back</h1>
+      <p class="sub" id="formSub">Sign in with your LTISD email to order from the DECA Mart counter.</p>
+      <div class="banner" id="banner"></div>
+      <form id="authForm" novalidate>
+        <div id="nameField" class="hidden">
+          <label for="name">Full name</label>
+          <input type="text" id="name" autocomplete="name" placeholder="Jane Smith">
+          <div class="field-error" id="nameErr"></div>
         </div>
-      </div>
-      <div class="hero-image" role="img" aria-label="Photo of the DECA Mart store interior"></div>
-    </div>
-  </section>
-
-  <section class="features">
-    <div class="features-eyebrow">WHY SUPPORT DECA CART?</div>
-    <h2>More than just a store</h2>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="feature-icon">👥</div>
-        <h3>100% Student Operated</h3>
-        <p>DECA students manage pricing, logistics, design, and stock. Every purchase supports real-world entrepreneurial education.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🕒</div>
-        <h3>Lightning-Fast Pickups</h3>
-        <p>Order between classes or during study hall — we prep your orders instantly for quick pickup at the main DECA Mart counter.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🏅</div>
-        <h3>Funding Student Success</h3>
-        <p>Proceeds directly fund DECA competition travel, scholarship opportunities, leadership conferences, and career preparation.</p>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="footer-top">
-      <div class="footer-brand">
-        <div class="logo"><span class="logo-mark"></span>DECA Cart</div>
-        <p>Connecting students with quality convenience. Shop our curated catalog built entirely by and for students.</p>
-      </div>
-      <div class="footer-cols">
-        <div class="footer-col">
-          <h4>EXPLORE</h4>
-          <a href="#">All Products</a>
-          <a href="#">New Arrivals</a>
-          <a href="#">DECA Apparel</a>
+        <div>
+          <label for="email">School email</label>
+          <input type="email" id="email" placeholder="you@ltisdschools.net" autocomplete="username">
+          <div class="field-error" id="emailErr"></div>
         </div>
-        <div class="footer-col">
-          <h4>ABOUT US</h4>
-          <a href="#">Our Mission</a>
-          <a href="#">Meet the Team</a>
-          <a href="#">Contact DECA</a>
+        <div>
+          <label for="password">Password</label>
+          <input type="password" id="password" autocomplete="current-password">
+          <div class="field-error" id="passErr"></div>
         </div>
+        <button type="submit" class="primary" id="submitBtn">Sign in</button>
+      </form>
+      <div class="switch"><span id="switchPrompt">No account yet?</span> <button type="button" class="linkbtn" id="switchBtn">Create one</button></div>
+      <p class="hint">Only @ltisdschools.net accounts are allowed.</p>
+    </div>
+
+    <div id="verifyView" class="hidden">
+      <h1>Verify your email</h1>
+      <p class="sub">We sent a verification link to <strong id="verifyEmail"></strong>. Click it, then press the button below. Check spam if you don't see it.</p>
+      <div class="banner" id="verifyBanner"></div>
+      <div class="verify-actions">
+        <button class="primary" id="checkVerifiedBtn" type="button">I've verified my email</button>
+        <div>Didn't get it? <button class="linkbtn" id="resendBtn" type="button">Resend email</button></div>
+        <button class="linkbtn" id="verifySignoutBtn" type="button">Use a different account</button>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2026 DECA Cart. All Rights Reserved. Prepared by local DECA High School Chapter.</span>
-      <span class="powered-by">Powered by DECA <span class="logo-mark"></span></span>
-    </div>
-  </footer>
+  </div>
+</div>
 
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyCV0Hr4fyZTvIIUd1meLznJyaEkv761Nf0",
+  authDomain: "deca-online-store.firebaseapp.com",
+  projectId: "deca-online-store",
+  storageBucket: "deca-online-store.firebasestorage.app",
+  messagingSenderId: "542379553359",
+  appId: "1:542379553359:web:75e151454e06b6e10b303a",
+  measurementId: "G-3WJRVBBQ5D"
+});
+const auth = getAuth(app);
+
+const DOMAIN = 'ltisdschools.net';
+const isDistrict = e => (e || '').toLowerCase().split('@')[1] === DOMAIN;
+const $ = id => document.getElementById(id);
+
+let mode = 'login', pendingMsg = '';
+
+/* ---------- helpers ---------- */
+function displayName(u) {
+  if (u.displayName) return u.displayName;
+  return u.email.split('@')[0].split(/[._-]+/).filter(Boolean)
+    .map(w => w[0].toUpperCase() + w.slice(1)).join(' ');
+}
+function initials(n) {
+  const p = n.split(' ').filter(Boolean);
+  return ((p[0] || '?')[0] + (p.length > 1 ? p[p.length - 1][0] : '')).toUpperCase();
+}
+const fmt = s => s ? new Date(s).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+function banner(el, msg, info) { el.textContent = msg; el.classList.toggle('info', !!info); el.classList.add('show'); }
+function clear(el) { el.textContent = ''; el.classList.remove('show', 'info'); }
+
+function openModal(view) {
+  $('overlay').classList.remove('hidden');
+  $('authView').classList.toggle('hidden', view !== 'auth');
+  $('verifyView').classList.toggle('hidden', view !== 'verify');
+  if (view === 'auth') $('email').focus();
+}
+function closeModal() { $('overlay').classList.add('hidden'); }
+
+function setMode(next) {
+  mode = next;
+  clear($('banner'));
+  ['nameErr', 'emailErr', 'passErr'].forEach(i => $(i).textContent = '');
+  $('authForm').reset();
+  const login = mode === 'login';
+  $('nameField').classList.toggle('hidden', login);
+  $('formTitle').textContent = login ? 'Welcome back' : 'Create an account';
+  $('formSub').textContent = login ? 'Sign in with your LTISD email to order from the DECA Mart counter.' : 'Use your @ltisdschools.net email and pick a password.';
+  $('submitBtn').textContent = login ? 'Sign in' : 'Create account';
+  $('switchPrompt').textContent = login ? 'No account yet?' : 'Already registered?';
+  $('switchBtn').textContent = login ? 'Create one' : 'Sign in';
+  $('password').setAttribute('autocomplete', login ? 'current-password' : 'new-password');
+}
+
+function friendlyError(err) {
+  switch (err && err.code) {
+    case 'auth/email-already-in-use': return 'That email is already registered. Try signing in instead.';
+    case 'auth/invalid-email': return 'Enter a valid email address.';
+    case 'auth/weak-password': return 'Password needs at least 6 characters.';
+    case 'auth/invalid-credential': case 'auth/wrong-password': case 'auth/user-not-found': return 'Email or password is incorrect.';
+    case 'auth/too-many-requests': return 'Too many attempts. Wait a moment and try again.';
+    default: return 'Something went wrong. Please try again.';
+  }
+}
+
+/* ---------- events ---------- */
+$('openLogin').onclick = () => { setMode('login'); openModal('auth'); };
+$('closeModal').onclick = closeModal;
+$('overlay').addEventListener('click', e => { if (e.target === $('overlay')) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); toggleMenu(false); } });
+$('switchBtn').onclick = () => setMode(mode === 'login' ? 'signup' : 'login');
+
+function toggleMenu(open) {
+  $('menu').classList.toggle('hidden', !open);
+  $('profileBtn').setAttribute('aria-expanded', open);
+}
+$('profileBtn').onclick = e => { e.stopPropagation(); toggleMenu($('menu').classList.contains('hidden')); };
+document.addEventListener('click', e => { if (!$('profileMenuWrap').contains(e.target)) toggleMenu(false); });
+$('menu').querySelector('a').addEventListener('click', () => toggleMenu(false));
+['menuSignout', 'accSignout', 'verifySignoutBtn'].forEach(id => $(id).onclick = () => { toggleMenu(false); signOut(auth); });
+
+$('authForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  clear($('banner'));
+  ['nameErr', 'emailErr', 'passErr'].forEach(i => $(i).textContent = '');
+  const name = $('name').value.trim();
+  const email = $('email').value.trim().toLowerCase();
+  const pass = $('password').value;
+  let ok = true;
+  if (mode === 'signup' && !name) { $('nameErr').textContent = 'Enter your name.'; ok = false; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { $('emailErr').textContent = 'Enter a valid email address.'; ok = false; }
+  else if (!isDistrict(email)) { $('emailErr').textContent = 'Use your @' + DOMAIN + ' email.'; ok = false; }
+  if (pass.length < 6) { $('passErr').textContent = 'Password needs at least 6 characters.'; ok = false; }
+  if (!ok) return;
+
+  $('submitBtn').disabled = true;
+  try {
+    if (mode === 'signup') {
+      const cred = await createUserWithEmailAndPassword(auth, email, pass);
+      await updateProfile(cred.user, { displayName: name });
+      await sendEmailVerification(cred.user);
+      render(cred.user); // refresh with the new display name
+    } else {
+      await signInWithEmailAndPassword(auth, email, pass);
+    }
+  } catch (err) {
+    banner($('banner'), friendlyError(err));
+  } finally {
+    $('submitBtn').disabled = false;
+  }
+});
+
+$('checkVerifiedBtn').onclick = async () => {
+  clear($('verifyBanner'));
+  const user = auth.currentUser;
+  if (!user) return;
+  $('checkVerifiedBtn').disabled = true;
+  try {
+    await user.reload();
+    if (user.emailVerified) { await user.getIdToken(true); render(user); }
+    else banner($('verifyBanner'), 'Not verified yet. Click the link in the email first.');
+  } catch (err) {
+    banner($('verifyBanner'), friendlyError(err));
+  } finally {
+    $('checkVerifiedBtn').disabled = false;
+  }
+};
+
+$('resendBtn').onclick = async () => {
+  clear($('verifyBanner'));
+  const user = auth.currentUser;
+  if (!user) return;
+  $('resendBtn').disabled = true;
+  try { await sendEmailVerification(user); banner($('verifyBanner'), 'Verification email sent again.', true); }
+  catch (err) { banner($('verifyBanner'), friendlyError(err)); }
+  setTimeout(() => $('resendBtn').disabled = false, 30000);
+};
+
+/* ---------- decide what the page shows ---------- */
+function setSignedOutUI() {
+  $('openLogin').classList.remove('hidden');
+  $('profileMenuWrap').classList.add('hidden');
+  $('account').classList.add('hidden');
+  $('heroTitle').innerHTML = 'DECA Cart to <span>DECA Mart</span>';
+}
+
+function render(user) {
+  if (!user) {
+    setSignedOutUI();
+    if (pendingMsg) { setMode('login'); openModal('auth'); banner($('banner'), pendingMsg); pendingMsg = ''; }
+    return;
+  }
+  if (!isDistrict(user.email)) {
+    pendingMsg = 'Only @' + DOMAIN + ' accounts can use DECA Cart.';
+    signOut(auth);
+    return;
+  }
+  if (!user.emailVerified) {
+    setSignedOutUI();
+    $('verifyEmail').textContent = user.email;
+    clear($('verifyBanner'));
+    openModal('verify');
+    return;
+  }
+
+  // Verified: show profile everywhere
+  const name = displayName(user), first = name.split(' ')[0];
+  closeModal();
+  $('openLogin').classList.add('hidden');
+  $('profileMenuWrap').classList.remove('hidden');
+  $('navAvatar').textContent = $('accAvatar').textContent = initials(name);
+  $('navName').textContent = first;
+  $('menuName').textContent = $('accName').textContent = name;
+  $('menuEmail').textContent = $('accEmail').textContent = user.email;
+  $('accSince').textContent = fmt(user.metadata.creationTime);
+  $('accLast').textContent = fmt(user.metadata.lastSignInTime);
+  $('account').classList.remove('hidden');
+  $('heroTitle').textContent = 'Welcome back, ' + name;
+}
+
+onAuthStateChanged(auth, render);
+setMode('login');
+</script>
 </body>
 </html>
